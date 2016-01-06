@@ -1,0 +1,24 @@
+exportPattern("^[[:alpha:]]+")
+import(eiPack, methods, tmvtnorm, foreach)
+importFrom(R.utils, insert)
+importFrom(ucminf, ucminf)
+importFrom(mvtnorm, dmvnorm, rmvnorm, pmvnorm)
+importFrom(msm, rtnorm)
+importFrom(data.table, rbindlist)
+importFrom(mnormt, dmnorm, sadmvn)
+importFrom(cubature, adaptIntegrate)
+importFrom(plyr, ldply)
+importFrom(ellipse, ellipse)
+importFrom(plotrix, draw.circle)
+
+importFrom("grDevices", "dev.off", "hcl", "pdf", "rgb")
+importFrom("graphics", "abline", "axis", "lines", "mtext", "par",
+            "plot", "points", "polygon")
+importFrom("stats", "coef", "cor", "cov", "density", "dnorm",
+            "formula", "lm", "na.omit", "pnorm", "quantile", "runif",
+            "sd", "terms.formula", "var", "weighted.mean")
+
+S3method(plot, ei)
+S3method(summary, ei)
+S3method(plot, ei_compare)
+exportClasses(ei_compare)
