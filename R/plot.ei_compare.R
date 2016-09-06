@@ -1,82 +1,68 @@
-plot.ei_compare <-
-function(x, ...) {
-	
-	
-	diff_table <- x@data[, grep("EI_Diff", colnames(x@data))]
-	diff_table <- na.omit(diff_table)
-	
-	cand_names <- as.character ( x@data[,1] )
-	cand_names <- cand_names[seq(1,length(cand_names),2)]
+plot.ei_compare <- function(x, ...){
+  
+  # Calculate Number of Plots to Create
+  group_num <- nplots <- length(x@groups) # Up to 4 groups!
+  # Warnings
+  if(group_num > 4) stop("Number of groups must be four or fewer booyah!") # Stop plot() if more than four racial/ethnic groups (for plotting purposes)
+  if(!is.na(x@data[2,4])) stop("In 'ei_rc_good_table()' function set include_good=F, I'm cereal you guys")
+  
+  # Collect Candidate Names for Labeling
+  ei_rc_combine_a <- na.omit(x@data)
+  cand_names_plot <- as.character(ei_rc_combine_a[-nrow(ei_rc_combine_a),1])
+  # Subset Point Estimates Just to Differences
+  ei_rc_combine_a <- ei_rc_combine_a[-nrow(ei_rc_combine_a), grep("EI_Diff",colnames(ei_rc_combine_a), fixed=T) ] # Gets rid of Total row and selects only DIFF columns
+  ei_rc_combine_a <- data.frame(cand_names_plot,ei_rc_combine_a )
+  # Reshape the data for ggplot()
+  tidy_it <- ei_rc_combine_a %>% tidyr::gather(Group, value, -cand_names_plot)
+  # Calculate Standard error differences
+  ses <- x@data[x@data$Candidate=="se",]
+  
+  # Conditionals for number of Groups 
+  if (group_num ==1) { # Group 1 Standard error collect; these all assume only EI/RxC methods
+    se_dif_1 <- ses[,2] - ses[,3]
+    dif_ses <- cbind(cand_names_plot, abs( data.frame(se_dif_1) ))
+  } else if (group_num ==2) { # Group 2 SE collect
+    se_dif_1 <- ses[,2] - ses[,3]
+    se_dif_2 <- ses[,5] - ses[,6]
+    dif_ses <- cbind(cand_names_plot, abs( data.frame(se_dif_1, se_dif_2) ))
+  } else if (group_num ==3) { # Group 3 SE collect
+    se_dif_1 <- ses[,2] - ses[,3]
+    se_dif_2 <- ses[,5] - ses[,6]
+    se_dif_3 <- ses[,8] - ses[,9]
+    dif_ses <- cbind(cand_names_plot, abs ( data.frame(se_dif_1, se_dif_2, se_dif_3) ))
+  } else { # Group 4 SE collect
+    se_dif_1 <- ses[,2] - ses[,3]
+    se_dif_2 <- ses[,5] - ses[,6]
+    se_dif_3 <- ses[,8] - ses[,9]
+    se_dif_4 <- ses[,11] - ses[,12]
+    dif_ses <- cbind(cand_names_plot, abs( data.frame(se_dif_1, se_dif_2, se_dif_3, se_dif_4) ))
+  } 
+  # Reshape SEs
+  tidy_se <- dif_ses %>% tidyr::gather(Group, se, -cand_names_plot)
+  # Combine Point esimates with SEs
+  tidy_it <- cbind(tidy_it, tidy_se)
+  tidy_it$se_1_2 <-tidy_it$se*2 # Add on 
+  tidy_it <- tidy_it[,-4] # Get rid of second cand_names_plot
+  # Create some NULL values for R CMD CHECK workaround
+  value <- Group <- se <- se_1_2 <- NULL
+  # Produce the GGPLOT
+  ggplot(tidy_it,aes(x=cand_names_plot, y = value, 
+                     shape=factor(Group, labels=x@groups), 
+                     color=factor(Group, labels=x@groups))) +
+    # Manipulate Point spacing
+    geom_point(position=position_dodge(width=rep(.5,nplots)),size=3) + labs(color = "Group", shape="Group") +
+    geom_hline(yintercept = 0, colour="gray", linetype = 2, size=1.5) +
+    # Adjust Error Bars for 1 and 2 SEs
+    geom_linerange(aes(x=cand_names_plot, y=value,  
+                       ymax = value + se, ymin = value - se), 
+                   position=position_dodge(width=rep(.5,nplots)), size=1.5) +
+    geom_linerange(aes(x=cand_names_plot, y=value, ymax = value + se_1_2, ymin = value - se_1_2),
+                   position=position_dodge(width=rep(.5,nplots)), size=.8) +
+    coord_flip() +
+    theme_bw()  +
+    ggtitle("Estimate Difference of EI and RxC Methods")+
+    theme(plot.title = element_text(size = 20, face = "bold")) +
+    labs(x="", y="RxC-EI Estimate") 
+  
+} # Close Function
 
-	group_names <- x@groups
-	
-	nplots <- ncol(diff_table) # Number of panels to make
-	
-	
-	if (nplots==1) {
-		diff_table <- diff_table[,1]
-	
-		if (max(abs(diff_table)) < 10) {
-			xlim <- c(-10,10)
-		} else {
-			xlim <- c ( - (ceiling ( max(abs(diff_table))) + 2), ceiling ( max(abs(diff_table))) + 2 )
-		}
-		plot(diff_table, 1:length(diff_table), xlim=xlim, pch=19, xlab = "RxC - EI", ylab = "Candidates",
-			main = paste(group_names, "EI Diff Comparison", sep=":"), yaxt="n", ...)
-		axis(2, at = 1:length(diff_table), labels = cand_names, las=1, ...) # need to adjust sideways
-
-		abline(v=0, lty=2, lwd=3, col="grey")
-		abline(v=1, lty=2, lwd=1, col="grey")
-		abline(v=-1, lty=2, lwd=1, col="grey")
-		abline(v=5, lty=2, lwd=1, col="grey")
-		abline(v=-5, lty=2, lwd=1, col="grey")
-	
-	} else if ( nplots == 2) {
-	
-		par(mfrow=c(2,1))
-	
-		for (i in 1:nplots) {
-	
-			if (max(abs(diff_table[,i])) < 10) {
-				xlim <- c(-10,10)
-			} else {
-				xlim <- c ( - (ceiling ( max(abs(diff_table[,i]))) + 2), ceiling ( max(abs(diff_table[,i]))) + 2 )
-			}
-			
-			plot(diff_table[,i], 1:length(diff_table[,i]), xlim=xlim, pch=19, xlab = "RxC - EI", ylab = "Candidates",
-				main = paste(group_names[i], " EI Diff Comparison",sep=":"), yaxt="n", ...)
-			axis(2, at = 1:length(diff_table[,i]), labels = cand_names, las=1, ...) # need to adjust sideways
-
-			abline(v=0, lty=2, lwd=3, col="grey")
-			abline(v=1, lty=2, lwd=1, col="grey")
-			abline(v=-1, lty=2, lwd=1, col="grey")
-			abline(v=5, lty=2, lwd=1, col="grey")
-			abline(v=-5, lty=2, lwd=1, col="grey")
-		}
-
-	} else if ( nplots == 3 | nplots == 4) {
-	
-		par(mfrow=c(2,2))
-	
-		for (i in 1:nplots) {
-	
-			if (max(abs(diff_table[,i])) < 10) {
-				xlim <- c(-10,10)
-			} else {
-				xlim <- c ( - (ceiling ( max(abs(diff_table[,i]))) + 2), ceiling ( max(abs(diff_table[,i]))) + 2 )
-			}
-			
-			plot(diff_table[,i], 1:length(diff_table[,i]), xlim=xlim, pch=19, xlab = "RxC - EI", ylab = "Candidates",
-				main =  paste(group_names[i], " EI Diff Comparison",sep=":"), yaxt="n", ...)
-			axis(2, at = 1:length(diff_table[,i]), labels = cand_names, las=1, ...) # need to adjust sideways
-
-			abline(v=0, lty=2, lwd=3, col="grey")
-			abline(v=1, lty=2, lwd=1, col="grey")
-			abline(v=-1, lty=2, lwd=1, col="grey")
-			abline(v=5, lty=2, lwd=1, col="grey")
-			abline(v=-5, lty=2, lwd=1, col="grey")
-		} # Close nplots for loop
-
-	} # Close else if loop
-	
-}

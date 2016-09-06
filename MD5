@@ -1,5 +1,5 @@
-c14aca7718756f4aef18540413c5a93e *DESCRIPTION
-0d8945d9c6a4515985d760bb13e1c207 *NAMESPACE
+f29ae27546b1f1dada4418218a6c80ea *DESCRIPTION
+a9fe46a238ddcfcf24b05a501534c393 *NAMESPACE
 d4cff12343a37388c62f17b2aa22ad5c *R/bayes_table_make.R
 d4375b8cf14206a640851570b1136130 *R/eiCompare-internal.R
 0e3230f9fbc2cd7cb75e1bde3a552096 *R/ei_compare-class.R
@@ -8,13 +8,14 @@ c17fd831db1f5f9f5519f54955387a2b *R/ei_rc_good_table.R
 0f89e187b24776e217a7d971ebf58f65 *R/eiread.R
 36d4c5224739dde4fd7317d008461f5f *R/goodman_generalize.R
 63f8d76b8aa1123c4bdf690c496942f7 *R/plot.ei.R
-85887622ab563ea5de70ae9bb9a65eb7 *R/plot.ei_compare.R
+50c09996b04d35863e799c51f701e839 *R/plot.ei_compare.R
 0eef746bbfd9cb2d5cf3a75bc944a1bb *R/summary.ei.R
 5498f978f12b6620e354e891219c4d48 *data/cor_06.rda
 e9aa75099cbcb5fcf8c662d3a4ca789c *data/corona.rda
 501c203e805862733eb7e2ca91dc4356 *data/lac_10.rda
 0211ece69f0be8e9991623aeb88a5a0d *demo/00Index
 cf40c98851bc721a4dcfe11a19bab515 *demo/demo.R
+c6ac5e3486e1027a6269614df12b8d94 *inst/doc/collingwood_et_al.pdf
 6197ea03a2745b3753b6e1faa4503d35 *inst/doc/eiCompare-manual.pdf
 2af358c84a30a0ec15fadf89c01e62b8 *man/bayes_table_make.Rd
 687850497dd803576ac505883db36200 *man/cor_06.Rd
@@ -27,5 +28,5 @@ ad9304a8ab5762d0bd203a33a07d74c8 *man/eiread.Rd
 a14032af9d22d83d9507f2ce33ac781d *man/goodman_generalize.Rd
 6b040ef0d93ae36ed37b9218a90e5c84 *man/lac_10.Rd
 4d2eeb84434e8c956c8cfaa36fb235f1 *man/plot.ei.Rd
-7a47ec0b0ca19102d55b4b6c3e69022d *man/plot.ei_compare.Rd
+b6e5a15128ace03ed130abe06d016800 *man/plot.ei_compare.Rd
 726cc2f29429e24675d7c4667d2eb286 *man/summary.ei.Rd

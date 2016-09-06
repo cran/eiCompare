@@ -4,7 +4,7 @@
 Plot Method for class ei_compare 
 }
 \description{
-Allows quick plotting, using plot() of EI vs EI:RxC differences
+Allows quick plotting, using plot() of EI vs EI:RxC differences. Produces ggplot2 ouput, amazing.
 }
 \usage{
 \method{plot}{ei_compare}(x, \ldots)
@@ -19,10 +19,10 @@ Arguments passed onto plot() and par()
 }
 }
 \details{
-Limited amount of plotting flexibility. If user wants more flexibility extract relevant objects from ei_rc_good_table() output.
+Limited amount of plotting flexibility. If user wants more flexibility extract relevant objects from ei_rc_good_table() output and do your own plotting!
 }
 \value{
-Graph output of EI and RxC differences
+ggplot2 graph output of EI and RxC differences
 }
 \references{
 eiPack, King et. al. (http://gking.harvard.edu/eiR)
