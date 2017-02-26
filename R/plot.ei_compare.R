@@ -46,6 +46,7 @@ plot.ei_compare <- function(x, ...){
   # Create some NULL values for R CMD CHECK workaround
   value <- Group <- se <- se_1_2 <- NULL
   # Produce the GGPLOT
+  suppressWarnings( # Warning: Ignoring unknown aesthetics: y
   ggplot(tidy_it,aes(x=cand_names_plot, y = value, 
                      shape=factor(Group, labels=x@groups), 
                      color=factor(Group, labels=x@groups))) +
@@ -63,6 +64,6 @@ plot.ei_compare <- function(x, ...){
     ggtitle("Estimate Difference of EI and RxC Methods")+
     theme(plot.title = element_text(size = 20, face = "bold")) +
     labs(x="", y="RxC-EI Estimate") 
-  
+  ) # Close Warning: Ignoring unknown aesthetics: y message
 } # Close Function
 

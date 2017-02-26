@@ -13,7 +13,7 @@ ei_rc_good_table(ei, rc, good, groups, include_good = F)
 
 \arguments{
   \item{ei}{
-Table/data frame object result from ei_est_gen
+Table/data frame object result from ei_est_gen. This assumes beta_yes=F in ei_est_gen(). See example below for beta_yes=T in ei_est_gen().
 }
   \item{rc}{
 Table/data frame from EI:RxC process from bayes_table_make()
@@ -111,5 +111,9 @@ ei_rc_combine <- ei_rc_good_table(results, ei_bayes_res,
 				groups= c("Latino", "Asian", "White")
 				)
 ei_rc_combine
+
+# If set beta_yes=T in ei_est_gen():
+#ei_rc_combine2 <- ei_rc_good_table(results[[1]], ei_bayes_res, groups= c("Black", "White"))
+
 }
 }

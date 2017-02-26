@@ -8,7 +8,7 @@ Iteratively fits EI models for candidates and racial/ethnic groups
 }
 \usage{
 ei_est_gen(cand_vector, race_group, total, rho = 10, data, table_names, 
-sample = 1000, tomog = F, density_plot = F, ...)
+sample = 1000, tomog = F, density_plot = F, beta_yes=F,...)
 }
 
 \arguments{
@@ -41,13 +41,18 @@ Logical to display tomography plot. If true will will save pdf plot to working d
   \item{density_plot}{
 Logical to display density plot of betab and betaw. If true will save pdf plot to working directory. Default is FALSE
 }
+
+  \item{beta_yes}{
+Logical to export betas (b, w) in list object in addition to table of results. Default is FALSE
+}
+
   \item{\dots}{
 Arguments passed onto ei() function
 }
 }
 
 \value{
-Data frame object containing EI individually estimated results
+Data frame/table object containing EI individually estimated results. If beta_yes=T, two list items, first the data frame table of results, second dataframe of betas themselves.
 }
 \references{
 eiPack. Gary King (1997). A Solution to the Ecological Inference Problem. Princeton: Princeton University Press.
@@ -89,10 +94,17 @@ cands <- c("pct_husted","pct_spiegel","pct_ruth","pct_button","pct_montanez","pc
 race_group3 <- c("~ pct_hisp", "~ pct_asian", "~ pct_white")
 table_names <- c("EI: Pct Hisp", "EI: Pct Asian", "EI: Pct White")
 
-# Run es_est_gen function
+# Run ei_est_gen function
 results <- ei_est_gen(cand_vector=cands, race_group = race_group3,
 			total = "totvote", data = corona, table_names = table_names)
 
 results
+# Run ei_est_gen function; Exporting betas into data frame
+results_w_betas <- ei_est_gen(cand_vector=cands, race_group = race_group3,
+			total = "totvote", data = corona, table_names = table_names, beta_yes=T)
+
+results_w_betas[[1]]# table of mean estimates
+results_w_betas[[2]]# betas of estimates for each precinct
+
 }
 }

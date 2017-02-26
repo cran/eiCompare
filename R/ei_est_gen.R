@@ -1,5 +1,6 @@
 ei_est_gen <- function(cand_vector, race_group, total, rho=10, data,
-                       table_names, sample=1000, tomog=F, density_plot=F,...) {
+                       table_names, sample=1000, tomog=F, density_plot=F,
+                       beta_yes=F,...) {
   
   # Package ei functions
   ei <- function (formula, total = NULL, Zb = 1, Zw = 1, id = NA, data = NA, 
@@ -562,19 +563,21 @@ ei_est_gen <- function(cand_vector, race_group, total, rho=10, data,
   
   #Loop Placeholder
   race_group_table <- list()
+  beta_full_hold <- list() # Added; 2-25-17
   
   # Loop over Race Vector
   for (k in 1:length(race_group)) {
     
     # Loop Placeholder
     cand_table <- list() # candidate place holder
+    beta_container <- list() # Added; 2-25-17
     
     # Loop over Candidates
     for (i in 1:length(cand_vector)) {
       
       # Formula object that is looked through
       form <- formula(paste(cand_vector[i], race_group[k])) 
-      
+      #ei_out <- ei::ei(form, total = total, erho=rho, data=data, sample=sample)
       try(ei_out <- ei(form, total = total, erho=rho, data=data, sample=sample,...),silent=T)
       gm <- geterrmessage()
       if(gm == "Maximizing likelihood
@@ -612,25 +615,33 @@ ei_est_gen <- function(cand_vector, race_group, total, rho=10, data,
       # Put into useable data frame		
       eimean <- data.frame(c(min_b, min_ste), c(non_b, non_ste)) 
       
+      cand_betas <- cbind( unlist(beta_stan_err[1]), unlist(beta_stan_err[3]) )
+      colnames(cand_betas) <- c("betab", "betaw")
       #the results for all candidate are stored here in this list
       cand_table[[i]] <- eimean
+      beta_container[[i]] <- cand_betas # Betas
       
     } # Close cand_vector loop
     
-    cand_table <- rbindlist(cand_table) # cand_table is for one racial group and all candidates
+    cand_table <- data.table::rbindlist(cand_table) # cand_table is for one racial group and all candidates
     cand_table <- data.frame(rn, cand_table) # Add in vector for labeling
     
     race_group_table[[k]] <- cand_table # Put candidate results into list
+    beta_full_hold[[k]] <- beta_container # add in all the betas
     
   } # Close race group loop
   
   if(length(race_group) == 1) { # For when there is just % Minority vs. % White, for example
     
     race_group_table <- data.frame(race_group_table)
+    beta_full_hold <- data.frame(beta_full_hold) # convert to data.frame()
+    colnames(beta_full_hold) <- c("betab", "betaw")
     
   } else{ # For when there are multiple groups (e.g., pct_hisp, pct_asian, pct_white)
+    
     race_group_table <- data.frame( lapply(race_group_table, list_extract) ) # list is length() number of racial groups
     race_group_table <- race_group_table[,c(1,seq(2,ncol(race_group_table),2))] # clean up table
+  
   }
   # Adding on Total Row
   tot <- colSums(race_group_table[seq(1,nrow(race_group_table),2),2:ncol(race_group_table)])
@@ -641,6 +652,25 @@ ei_est_gen <- function(cand_vector, race_group, total, rho=10, data,
   add[,1] <- c(as.character(race_group_table[,1]), "Total")
   race_group_table <- add 
   
-  return(race_group_table)
+  # Conditional Export of Betas; Default is only Table
+  if (beta_yes){ # probably need to put in conditional here for race_group > 1
+    beta_names <-list()
+    for (i in 1:length(race_group)){
+      beta_names[[i]] <- paste(str_trim(gsub("~","",race_group[i])), cand_vector, sep="_") 
+    }
+    # Unlist the pasting, then organize for col-names labeling
+    beta_names <- as.vector( unlist(beta_names) )
+    beta_b <- paste("betab", beta_names, sep="_")
+    beta_w <- paste("betaw", beta_names, sep="_")
+    beta_names <- insert(beta_b, ats=1:length(beta_b)+1, values=beta_w) # this insert function makes no sense
+    
+    beta_full_hold <- as.data.frame(beta_full_hold)
+    names(beta_full_hold) <- beta_names
+    
+    # Return results, and then also betas
+    return(list(race_group_table=race_group_table, all_betas = beta_full_hold))
   
-}
+  } else {
+    return(race_group_table)
+  }
+} # Close Function

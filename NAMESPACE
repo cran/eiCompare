@@ -12,6 +12,7 @@ importFrom(plotrix, draw.circle)
 importFrom(plyr, ldply)
 importFrom(tidyr, gather)
 importFrom(magrittr, `%>%`)
+importFrom(stringr,str_trim)
 importFrom("grDevices", "dev.off", "hcl", "pdf", "rgb")
 importFrom("graphics", "abline", "axis", "lines", "mtext", "par",
             "plot", "points", "polygon")
