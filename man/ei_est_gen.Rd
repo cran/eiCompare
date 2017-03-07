@@ -103,8 +103,9 @@ results
 results_w_betas <- ei_est_gen(cand_vector=cands, race_group = race_group3,
 			total = "totvote", data = corona, table_names = table_names, beta_yes=T)
 
-results_w_betas[[1]]# table of mean estimates
-results_w_betas[[2]]# betas of estimates for each precinct
+res1 <- results_w_betas[[1]]# table of mean estimates
+res1
+res2 <- results_w_betas[[2]]# betas of estimates for each precinct
 
 }
 }
