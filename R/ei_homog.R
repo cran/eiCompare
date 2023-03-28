@@ -11,11 +11,12 @@
 #' @param race_cols A character vector listing the column names for turnout by race
 #' @param totals_col The name of the column containing total votes cast in each precinct
 #' @param cp numeric; homogeneous precinct cut-point, e.g., 0.80; default = 0.80
-#' @warn_row = numeric; threshold number of precincts racial group must be above to 
+#' @param warn_row = numeric; threshold number of precincts racial group must be above to 
 #' conduct analysis; default = 5. For example, with three groups, whites, blacks, Hispanics, 
 #' each group must have at least 5 precincts with at least 80% share of the population for 
 #' that group. All racial groups need to have at least n number of precincts at or above 
 #' warn_row level or error will be thrown.
+#' @param verbose A boolean indicating whether to print out status messages.
 #' @return matrix with homogeneous precinct results, columns = race groups, rows = candidates
 #' @author Loren Collingwood <loren.collingwood@@ucr.edu>; <loren.collingwood@@gmail.com>
 #' @author Stephen Popick
@@ -70,7 +71,7 @@ ei_homog <- function (data, cand_cols, race_cols, totals_col, cp = 0.8, warn_row
         if (verbose) {
             message(paste("Number of observations for racial group: ", 
                           race_cols[j], sep = ""))
-            print(nrow(homog))
+            message(nrow(homog))
         }
         stopifnot(`Number of rows for racial group lower than threshold. Change warn_row threshold and/or check data to see if homogeneous precinct analysis even possible for all race groups.` = nrow(homog) >= 
                       warn_row)

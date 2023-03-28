@@ -28,8 +28,9 @@
 #' @param diagnostic Boolean. If true, run diagnostic test to assess viability of MCMC
 #' parameters (will return all chain results)
 #' @param n_chains  Number of chains for diagnostic test. Default is set to 3.
-#' @param plot_path A string to specify plot save location. Defaulted to working directory
+#' @param plot_path A string to specify plot save location. If NULL, plot is not saved.
 #' @param par_compute Boolean. If true, diagnostic test will be run in parallel.
+#' @param n_cores The number of cores to use in parallel computation. Defaulted to NULL, in which case parallel::detectCores() - 1 is used
 #' @param ... Additional parameters passed to eiPack::tuneMD()
 #'
 #' @author Loren Collingwood <loren.collingwood@@ucr.edu>, <loren.collingwood@@gmail.com>
@@ -45,7 +46,7 @@
 #' @export
 #'
 #' @importFrom mcmcse mcse.mat mcse.q.mat
-#' @importFrom doParallel registerDoParallel
+#' @importFrom doSNOW registerDoSNOW
 #' @importFrom stats sd
 #' @importFrom foreach getDoParWorkers %dopar% %do%
 #' @importFrom parallel makeCluster stopCluster
@@ -71,8 +72,9 @@ ei_rxc <- function(
                    verbose = FALSE,
                    diagnostic = FALSE,
                    n_chains = 3,
-                   plot_path = "",
+                   plot_path = NULL,
                    par_compute = FALSE,
+                   n_cores = NULL,
                    ...) {
 
   # Check for valid arguments
@@ -134,10 +136,14 @@ ei_rxc <- function(
       if (verbose) message("Running in paralllel")
 
       # Standard to use 1 less core for clusters
-      clust <- parallel::makeCluster(parallel::detectCores() - 1)
+      if (is.null(n_cores)) {
+        clust <- parallel::makeCluster(parallel::detectCores() - 1)
+      } else {
+        clust <- parallel::makeCluster(n_cores)
+      }
 
       # Register parallel processing cluster
-      doParallel::registerDoParallel(clust)
+      doSNOW::registerDoSNOW(clust)
 
       # Check to make sure that cores are set up correctly
       foreach::getDoParWorkers()
@@ -158,7 +164,7 @@ ei_rxc <- function(
       chain = seq_len(n_chains),
       .inorder = FALSE,
       .packages = c("ei"),
-      .options.parallel = opts
+      .options.snow = opts
     ) %myinfix% {
       # Bayes model estimation
       suppressWarnings(
@@ -185,7 +191,7 @@ ei_rxc <- function(
       # Loop through races to get proportion of race voting for each cand
       # This loop is required to get proportions within races
       for (i in 1:length(race_cols)) {
-        race_indices <- grep(race_cols[i], colnames(chains_raw))
+        race_indices <- grep(paste0('\\b',race_cols[i],'\\b'), colnames(chains_raw))
         race_draws <- chains_raw[, race_indices]
         race_pr <- race_draws / rowSums(race_draws)
         chains_pr[, race_indices] <- race_pr
@@ -209,16 +215,18 @@ ei_rxc <- function(
     # Combine chains
     chains_list <- coda::mcmc.list(md_mcmc)
 
-    if (verbose) message("Creating and saving plots")
-    # Generate trace and general density plots
-    pdf(paste0(plot_path, "trace_density.pdf"))
-    plot(chains_list)
-    grDevices::dev.off()
-
-    # Generate Gelman plot for convergence
-    pdf(paste0(plot_path, "gelman.pdf"))
-    coda::gelman.plot(chains_list)
-    grDevices::dev.off()
+    if (!is.null(plot_path)) {
+      if (verbose) message("Creating and saving plots")
+      # Generate trace and general density plots
+      pdf(paste0(plot_path, "trace_density.pdf"))
+      plot(chains_list)
+      grDevices::dev.off()
+      
+      # Generate Gelman plot for convergence
+      pdf(paste0(plot_path, "gelman.pdf"))
+      coda::gelman.plot(chains_list)
+      grDevices::dev.off()
+    }
 
     return(chains_list)
   } else {
@@ -247,7 +255,7 @@ ei_rxc <- function(
     # Loop through races to get proportion of race voting for each cand
     # This loop is required to get proportions within races
     for (i in 1:length(race_cols)) {
-      race_indices <- grep(race_cols[i], colnames(chains_raw))
+      race_indices <- grep(paste0('\\b',race_cols[i],'\\b'), colnames(chains_raw))
       race_draws <- chains_raw[, race_indices]
       race_pr <- race_draws / rowSums(race_draws)
       chains_pr[, race_indices] <- race_pr

@@ -92,6 +92,8 @@ voter_file_w_ward$block <- c("1016", "3002", "1016", "4001", "2004")
 # Load Rockland County Census information
 data(rockland_census)
 
+rockland_census$NY$year <- 2010
+
 # Apply BISG to the voter file to get race predictions
 voter_file_with_race <- eiCompare::wru_predict_race_wrapper(
   voter_file = as.data.frame(voter_file_w_ward),

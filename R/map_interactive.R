@@ -24,7 +24,8 @@
 #' have a concatenated geometry column with a
 #' "c(latitude, longitude)" structure as in the output from the
 #' geocoder censusxy
-#'
+#' 
+#' @return A leaflet html widget object
 #' @importFrom tidyr extract
 #' @importFrom rlang .data
 #' @importFrom leaflet addTiles addMarkers
@@ -42,7 +43,7 @@ map_interactive <-  function(voter_file,
          latitude = "lat",
          longitude = "lon") {
     
-    if (class(voter_file) == "data.frame" & any(colnames(voter_file) == "geometry")) {
+    if (is.data.frame(voter_file) & any(colnames(voter_file) == "geometry")) {
         voter_file <- tidyr::extract(voter_file,
                                      .data$geometry,
                                      into = c("lat", "lon"), "\\((.*),(.*)\\)",

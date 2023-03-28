@@ -131,12 +131,12 @@ run_geocoder <- function(voter_file,
       packageStartupMessage("Initializing...", appendLF = FALSE)
 
       # Run Census Geocoder API
-      clust <- parallel::makeCluster(detectCores() - 2)
-      doParallel::registerDoParallel(clust)
+      clust <- makeCluster(detectCores() - 2)
+      registerDoParallel(clust)
 
       start_time_2 <- Sys.time()
 
-      census_voter_file <- foreach::foreach(
+      census_voter_file <- foreach(
         i = 1,
         .combine = rbind,
         .packages = c("censusxy", "sf")
@@ -158,7 +158,7 @@ run_geocoder <- function(voter_file,
 
       (end_time_2 <- Sys.time() - start_time_2)
 
-      parallel::stopCluster(clust)
+      stopCluster(clust)
       gc()
 
       voter_file <- census_voter_file
@@ -230,12 +230,12 @@ run_geocoder <- function(voter_file,
       }
 
       # Run Census Geocoder API
-      clust <- parallel::makeCluster(detectCores() - 2)
-      doParallel::registerDoParallel(clust)
+      clust <- makeCluster(detectCores() - 2)
+      registerDoParallel(clust)
 
       start_time_2 <- Sys.time()
 
-      census_voter_file <- foreach::foreach(
+      census_voter_file <- foreach(
         i = 1:n_loops,
         .combine = rbind,
         .packages = c("censusxy", "sf")
@@ -257,7 +257,7 @@ run_geocoder <- function(voter_file,
 
       (end_time_2 <- Sys.time() - start_time_2)
 
-      parallel::stopCluster(clust)
+      stopCluster(clust)
       gc()
 
       voter_file <- census_voter_file

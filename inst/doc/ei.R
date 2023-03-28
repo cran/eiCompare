@@ -84,28 +84,28 @@ race_cand_cors(
 )
 
 ## -----------------------------------------------------------------------------
-ei_results_iter <- ei_iter(
-  data = gwinnett_ei,
-  cand_cols = cands,
-  race_cols = races,
-  totals_col = total,
-  name = "Iter"
-)
-summary(ei_results_iter)
+# ei_results_iter <- ei_iter(
+#  data = gwinnett_ei,
+#  cand_cols = cands,
+#  race_cols = races,
+#  totals_col = total,
+#  name = "Iter",
+#)
+#summary(ei_results_iter)
 
 ## -----------------------------------------------------------------------------
-ei_results_rxc <- ei_rxc(
-  data = gwinnett_ei,
-  cand_cols = cands,
-  race_cols = races,
-  totals_col = total,
-  ntunes = 1,
-  samples = 5000,
-  thin = 1,
-  name = "RxC"
-)
-summary(ei_results_iter, ei_results_rxc)
+#ei_results_rxc <- ei_rxc(
+#  data = gwinnett_ei,
+#  cand_cols = cands,
+#  race_cols = races,
+#  totals_col = total,
+#  ntunes = 1,
+#  samples = 5000,
+#  thin = 1,
+#  name = "RxC"
+#)
+#summary(ei_results_iter, ei_results_rxc)
 
 ## ----fig.height = 6, fig.width = 8, fig.align = "center"----------------------
-plot(ei_results_iter, ei_results_rxc)
+#plot(ei_results_iter, ei_results_rxc)
 

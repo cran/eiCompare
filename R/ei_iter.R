@@ -35,16 +35,16 @@
 #' @param eiCompare_class default = TRUE
 #' @param betas A boolean to return precinct-level betas for each 2x2 ei
 #' @param par_compute A boolean to conduct ei using parallel processing
+#' @param n_cores The number of cores to use in parallel computation. Defaulted to NULL, in which case parallel::detectCores() - 1 is used
 #' @param verbose A boolean indicating whether to print out status messages.
-#' @param plot_path A string to specify plot save location. Defaulted to working
-#'  directory.
+#' @param plot_path A string to specify plot save location. If NULL, plot is not saved
 #' @param ... Additional arguments passed directly to ei::ei()
 #'
 #' @return If eiCompare_class = TRUE, an object of class eiCompare is returned.
 #' Otherwise, a dataframe is returned that matches the formatting of ei_est_gen
 #' output.
 #'
-#' @importFrom doParallel registerDoParallel
+#' @importFrom doSNOW registerDoSNOW
 #' @importFrom foreach getDoParWorkers %dopar% %do%
 #' @importFrom parallel makeCluster stopCluster
 #' @importFrom bayestestR ci
@@ -73,8 +73,9 @@ ei_iter <- function(
                     eiCompare_class = TRUE,
                     betas = FALSE,
                     par_compute = FALSE,
+                    n_cores = NULL,
                     verbose = FALSE,
-                    plot_path = "",
+                    plot_path = NULL,
                     ...) {
 
   # Preparation for parallel processing if user specifies parallelization
@@ -89,10 +90,14 @@ ei_iter <- function(
     }
 
     # Standard to use 1 less core for clusters
-    clust <- parallel::makeCluster(parallel::detectCores() - 1)
+    if (is.null(n_cores)) {
+      clust <- parallel::makeCluster(parallel::detectCores() - 1)
+    } else {
+      clust <- parallel::makeCluster(n_cores)
+    }
 
     # Register parallel processing cluster
-    doParallel::registerDoParallel(clust)
+    doSNOW::registerDoSNOW(clust)
 
     # Check to make sure that cores are set up correctly
     foreach::getDoParWorkers()
@@ -153,7 +158,7 @@ ei_iter <- function(
     i = seq_len(n_iters),
     .inorder = FALSE,
     .packages = c("ei", "stats", "utils", "mvtnorm"),
-    .options.parallel = opts
+    .options.snow = opts
   ) %myinfix% {
     cand <- race_cand_pairs[i, "cand"]
     race <- race_cand_pairs[i, "race"]
@@ -229,7 +234,7 @@ ei_iter <- function(
       ii <- ii + 1
     }
 
-    if (plots) {
+    if (plots & !is.null(plot_path)) {
       # Create tomography plots
       grDevices::png(paste0(plot_path, "tomography_", cand, "_", race, ".png"),
         units = "in", height = 6, width = 6, res = 500
@@ -333,7 +338,7 @@ ei_iter <- function(
   # Plots moved to here
   # Density plots
   if (plots) {
-    print("Creating density plots")
+    message("Creating density plots")
 
     # Combine aggregate results for district level values into one data frame
     agg_race <- sapply(ei_results, function(x) colnames(x[[1]])[2])

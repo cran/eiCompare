@@ -59,6 +59,8 @@ voter_file_complete <- as.data.frame(voter_file_dedupe)
 class(voter_file_complete)
 
 ## -----------------------------------------------------------------------------
+georgia_census$GA$year <- 2010
+
 # Perform BISG
 bisg_df <- eiCompare::wru_predict_race_wrapper(
   voter_file = voter_file_complete,
