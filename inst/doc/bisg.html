@@ -492,6 +492,9 @@ voter.</h3>
 voter_file_complete &lt;- as.data.frame(voter_file_dedupe)
 class(voter_file_complete)
 #&gt; [1] &quot;data.frame&quot;</code></pre>
+<p>Note that <code>wru</code> requires an internet connection to pull in
+supplemental data. If the connection cannot be made,
+<code>wru_predict_race_wrapper</code> will return <code>NULL</code>.</p>
 <pre class="r"><code>georgia_census$GA$year &lt;- 2010
 
 # Perform BISG

@@ -1,5 +1,5 @@
-f08f086ca49ce6d2971588979043f633 *DESCRIPTION
-3fc209251f78f69c160439dfd48b815f *NAMESPACE
+f5fcae7b986a2250910a3cf84e15949f *DESCRIPTION
+4685a0999106b8fe0f9bf3d4862f790d *NAMESPACE
 9de833f0a2bc74820202b0817e17dfdc *NEWS.md
 bcb5846596b7da5204bf4569ab71e41c *R/bayes_table_make.R
 5776d5514256e633d78769f03a3c6668 *R/data.R
@@ -40,8 +40,8 @@ f04e57d3bcce40f68944fd912f56e5e1 *R/summary.eiCompare.R
 a308660d10354fa7f41e1b4c327ef945 *R/surname_utils.R
 ea27e1541bd0595b5132d4d6d825ecf7 *R/utils-pipe.R
 9894a3f7d04e801429e698c2eb867aad *R/voter_file_utils.R
-ebacfb677bc0418bfd1ec92e4429e312 *R/wru_predict_race_wrapper.R
-ff265c780dad26a15d12cb457e2469d2 *README.md
+f6e830334db9305f74711a5cda8c9798 *R/wru_predict_race_wrapper.R
+95b12def7668504a28908d0a7063a264 *README.md
 ffbf9b0fba5cfd6539e60de8dd1874ed *build/vignette.rds
 5498f978f12b6620e354e891219c4d48 *data/cor_06.rda
 e9aa75099cbcb5fcf8c662d3a4ca789c *data/corona.rda
@@ -59,8 +59,8 @@ aeb48e5a5f3aac7148a7ddae5035bb59 *data/gwinnett_ei.rda
 0211ece69f0be8e9991623aeb88a5a0d *demo/00Index
 4b901adfc9e30d1724f3afd908d0a205 *demo/demo.R
 84834fff109245b699176be2421e5ed8 *inst/doc/bisg.R
-300c2fe40b75063f660ec26f8eb1a185 *inst/doc/bisg.Rmd
-84ab1f9c701e3a8d33411e3a814b0bfb *inst/doc/bisg.html
+944be46e95a5a2fe3f77cb5b6caf4b27 *inst/doc/bisg.Rmd
+fa831ff34fd46229ebc8642806f27fd1 *inst/doc/bisg.html
 7ecec46f9f4f8ccbdbfe734b86c79421 *inst/doc/ei.R
 5cccbf33b3748cc4a515e537b0944f4e *inst/doc/ei.Rmd
 c9af090b9c900dd26ba8793e38795fab *inst/doc/ei.html
@@ -68,8 +68,8 @@ ce611a634baba7ffb6e256f2c2fea429 *inst/doc/parallel_processing.R
 8cc32b943740df86486761781fd72f5d *inst/doc/parallel_processing.Rmd
 ece64a45e68e8e0bc7e51f532d4d04af *inst/doc/parallel_processing.html
 af4462c67ffcfb27f2c985ff8a5b03ed *inst/doc/performance_analysis.R
-b4b64a25586cc3e1b5ea06b45eebb35d *inst/doc/performance_analysis.Rmd
-15bd9400fc37fa164348720c4961c2e1 *inst/doc/performance_analysis.html
+9e142ec8d31aec8616ba283ba932e31a *inst/doc/performance_analysis.Rmd
+3604215bd3dd0d693a6838e15b2576ca *inst/doc/performance_analysis.html
 0c680872fc73505e80acb0e6e41af2b6 *inst/logo.png
 96d2f6a7a08abd4d2e464827abf00af4 *man/bayes_table_make.Rd
 afea662dfd3e8dcaf68b9f5b6319bb07 *man/betas_for_return.Rd
@@ -154,10 +154,10 @@ dbd4d152483696c2220714193d252b8a *tests/testthat/test_fips_extract.R
 a143244c6d074955490c24a882e66c96 *tests/testthat/test_precinct_agg_combine.R
 b0bf487d1681bc9cb71548b8f5b77d28 *tests/testthat/test_surname_utils.R
 b11ecbb771fc12e965a63e52eba17c92 *tests/testthat/test_wru_predict_race_wrapper.R
-300c2fe40b75063f660ec26f8eb1a185 *vignettes/bisg.Rmd
+944be46e95a5a2fe3f77cb5b6caf4b27 *vignettes/bisg.Rmd
 5cccbf33b3748cc4a515e537b0944f4e *vignettes/ei.Rmd
 33ffd10a9fa8140e761c05330014e030 *vignettes/fulton_gwinnett_shape_maps.PNG
 e4c813e6aca4e6bfb7d7362d500e36a2 *vignettes/para_benchmark_box_nsamples.png
 8cc32b943740df86486761781fd72f5d *vignettes/parallel_processing.Rmd
-b4b64a25586cc3e1b5ea06b45eebb35d *vignettes/performance_analysis.Rmd
+9e142ec8d31aec8616ba283ba932e31a *vignettes/performance_analysis.Rmd
 8f49766a73b8a53243419009a3ff5cd3 *vignettes/voter_data_df.PNG

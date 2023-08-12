@@ -585,7 +585,10 @@ are informative of their race. <code>eiCompare</code> has a wrapper
 function for passing a voter file into the BISG function provided by the
 WRU package. To use this function, we’ll load some Census data that was
 extracted using WRU containing information about the racial demographics
-of Rockland County:</p>
+of Rockland County. Note that <code>wru</code> requires an internet
+connection to pull in supplemental data. If the connection cannot be
+made, <code>wru_predict_race_wrapper</code> will return
+<code>NULL</code>.</p>
 <pre class="r"><code># Load Rockland County Census information
 data(rockland_census)
 

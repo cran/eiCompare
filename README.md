@@ -13,6 +13,10 @@
 
 ## News
 
+### eiCompare 3.0.3
+
+* Added handling of connection errors from wru, to comply with CRAN policy on graceful failure when accessing internet resources that have changed or become unavailable.
+
 ### eiCompare 3.0.2 
 
 #### Package changes
