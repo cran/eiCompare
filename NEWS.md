@@ -1,3 +1,5 @@
+#see README.md for more recent news
+
 # eiCompare 3.0.2 
 
 ## Package changes

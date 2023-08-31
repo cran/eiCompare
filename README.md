@@ -12,6 +12,9 @@
 - Academics who study the causes and consequences of vote dilution and racially polarized voting.
 
 ## News
+### eiCompare 3.0.4
+*Fixed a bug in tests/testthat/test_wru_predict_race_wrapper.R that fails
+if there isnt internet to access wru repo data
 
 ### eiCompare 3.0.3
 

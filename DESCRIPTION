@@ -1,7 +1,7 @@
 Package: eiCompare
 Type: Package
 Title: Compares Different Ecological Inference Methods
-Version: 3.0.3
+Version: 3.0.4
 Authors@R: 
     c(person(given = "Loren",
              family = "Collingwood",
@@ -50,7 +50,7 @@ Suggests: knitr, plyr, rmarkdown, reshape2, RColorBrewer, RJSONIO,
 RoxygenNote: 7.2.1
 Encoding: UTF-8
 VignetteBuilder: knitr
-Packaged: 2023-08-12 16:34:20 UTC; aridecter-frain
+Packaged: 2023-08-30 21:17:54 UTC; rachelcarroll
 Author: Loren Collingwood [aut] (<https://orcid.org/0000-0002-4447-8204>),
   Ari Decter-Frain [aut, cre] (<https://orcid.org/0000-0001-9635-3334>),
   Hikari Murayama [aut] (<https://orcid.org/0000-0002-4067-4734>),
@@ -62,4 +62,4 @@ Author: Loren Collingwood [aut] (<https://orcid.org/0000-0002-4447-8204>),
 Maintainer: Ari Decter-Frain <adecterfrain@gmail.com>
 LazyData: true
 Repository: CRAN
-Date/Publication: 2023-08-12 17:00:12 UTC
+Date/Publication: 2023-08-31 13:30:02 UTC
